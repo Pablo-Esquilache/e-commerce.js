@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <title>E - Commerce Estandar</title>
+    <link
+      rel="shortcut icon"
+      href="./imagenes/zapatilla-logo.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="./css/normalize.css" />
+    <link rel="stylesheet" href="./css/nav.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="nav">
+        <div class="nav_container">
+          <div class="li_1">
+            <li>
+              <a href="./index.html"
+                ><img src="./imagenes/zapatilla-logo.png" alt=""
+              /></a>
+            </li>
+          </div>
+          <div class="li_2">
+            <li><a href="./paginas/nosotros.html">Nosotros</a></li>
+            <li><a href="#" id="cart">🛒<span id="quantity_cart" class="quantity_cart"></span></a></li>
+            <li></li>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <section>
+      <div class="carrusel_info">
+        <ul>
+          <li>
+            <div class="div1">
+              <img src="http://placeimg.com/1300/450/commerce" />
+            </div>
+          </li>
+          <li>
+            <div class="div2">
+              <img src="http://placeimg.com/1300/450/tech" />
+            </div>
+          </li>
+          <li>
+            <div class="div3">
+              <img src="http://placeimg.com/1300/450/architecture" />
+            </div>
+          </li>
+          <li>
+            <div class="div4">
+              <img src="http://placeimg.com/1300/450/people" />
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="text_info">
+        <h1>Tus Zapas - Shop</h1>
+        <p>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Autem,
+          quibusdam dicta illum similique deserunt ea eius veniam laborum
+          corporis, accusamus sed, doloribus consequatur perspiciatis quisquam
+          itaque beatae ab et ad?Lorem ipsum, dolor sit amet consectetur
+          adipisicing elit. Unde iste distinctio expedita provident quidem
+          itaque neque placeat optio voluptatem laborum ullam, dolorem facilis
+          nam assumenda necessitatibus repellat quisquam inventore voluptate?
+        </p>
+      </div>
+      <hr />
+      <div class="shop_container">
+        <h1>SHOP</h1>
+        <div id="card_container" class="card_container"></div>
+      </div>
+      <div id="cart_modal_container"></div>
+      <div id="form_modal_container"></div>
+
+    </section>
+    <footer>
+      <hr />
+      <div class="txt_footer">
+        <p>copyright - Supermercado AlCer</p>
+        <p>Desarrollado por @pabloesquilache</p>
+      </div>
+    </footer>
+    <script type="module" src="./javascript/firebase.js"></script>
+    <script type="module" src="./javascript/script.js"></script>
+  </body>
+</html>
