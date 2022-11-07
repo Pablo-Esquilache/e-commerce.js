@@ -11,8 +11,10 @@ body {
 }
 hr {
   width: 90%;
+  margin: auto;
   color: rgb(183, 32, 54);
 }
+
 footer {
   margin-top: 100px;
   text-align: center;

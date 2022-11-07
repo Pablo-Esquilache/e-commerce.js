@@ -114,7 +114,7 @@ const print_cart = () => {
   //FOREACH PARA PINTAR CARRITO
   if (carrito.length === 0) {
     let txt_cart_vacio = document.createElement("p");
-    txt_cart_vacio.innerText = "Su carrito esta vacio, vuelva al shop...";
+    txt_cart_vacio.innerHTML = `<p>Su carrito esta vacio, vuelva al <a href="./index.html"></a>Shop ...</p>`;
     cart_container.append(txt_cart_vacio);
   } else {
     carrito.forEach((product) => {
@@ -126,7 +126,7 @@ const print_cart = () => {
     <h4>${product.modelo}</h4>
     <p>$ ${product.precio}</p>
     <p>${product.cantidad}</p>
-    <p>Subtotal: ${product.precio * product.cantidad}</p>
+    <p>Subtotal:$ ${product.precio * product.cantidad}</p>
     <button class="btn_delete">❌</button>
     `;
       cart_container.append(modal_body);
