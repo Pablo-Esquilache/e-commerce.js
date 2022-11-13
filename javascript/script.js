@@ -2,13 +2,14 @@
 import { getStock } from "./firebase.js";
 
 //CARD PRODUCTS
-const card_container = document.getElementById("card_container");
+//const card_container = document.getElementById("card_container");
+const card_detail_container = document.getElementById("card_detail_container");
+let cantidad = 1;
 
 //CARRITO
-//const card = document.getElementById("cart");
-const cart_container = document.getElementById("cart_modal_container");
 let carrito = JSON.parse(localStorage.getItem("cart")) || [];
-let cantidad = 1;
+const card = document.getElementById("cart");
+const cart_container = document.getElementById("cart_modal_container");
 const quantity_cart = document.getElementById("quantity_cart");
 
 //LOCAL STORAGE
@@ -29,9 +30,9 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 //LISTAR CARDS
 const listar_card = (product) => {
-  let card = document.createElement("div");
-  card.className = "card_shop";
-  card.innerHTML = `
+  let card_detail = document.createElement("div");
+  card_detail.className = "card_detail";
+  card_detail.innerHTML = `
       <div class="img_container">
         <img src="${product.imagen}">
       </div>
@@ -39,15 +40,26 @@ const listar_card = (product) => {
         <h3>${product.marca} ${product.modelo}</h3>
         <p>$ ${product.precio}</p>
       </div>
+      <div>
+      <div class="option_btn">
+        <select name="selection_talle" id="selection_talle">
+          <option value="38">38</option>
+          <option value="40">40</option>
+          <option value="42">42</option>
+          <option value="44">44</option>
+        </select>
+      </div>
       <div class="btn_count">
         <button class="btn_min">-</button>
         <span class="input_count">1</span>
         <button class="btn_max">+</button>
       </div>
+      </div>
+      <button class="btn_add_cart">Añadir al carrito</button>
     `;
-  card_container.append(card);
-    //ITEM COUNT
-  let btn_min = card.querySelector(".btn_min");
+  card_detail_container.append(card_detail);
+  //ITEM COUNT
+  let btn_min = card_detail.querySelector(".btn_min");
   btn_min.addEventListener("click", () => {
     cantidad--;
     if (cantidad <= 1) {
@@ -56,20 +68,21 @@ const listar_card = (product) => {
     input_count.innerText = cantidad;
   });
 
-  let input_count = card.querySelector(".input_count");
+  let input_count = card_detail.querySelector(".input_count");
 
-  let btn_max = card.querySelector(".btn_max");
+  let btn_max = card_detail.querySelector(".btn_max");
   btn_max.addEventListener("click", () => {
     cantidad++;
     input_count.innerText = cantidad;
   });
-    //BTN AÑADIR AL CARRITO
-  let btn_add_cart = document.createElement("button");
-  btn_add_cart.innerText = "Añadir al carrito";
-  btn_add_cart.className = "btn_add_cart";
-  card.append(btn_add_cart);
-    //FUNCION PARA INCORPORAR PRODUCTOS AL ARRAY DEL CARRITO
+
+  //BTN AÑADIR AL CARRITO
+  let btn_add_cart = card_detail.querySelector(".btn_add_cart");
+  //FUNCION PARA INCORPORAR PRODUCTOS AL ARRAY DEL CARRITO
   btn_add_cart.addEventListener("click", () => {
+    //TALLE
+    let selection_size = card_detail.querySelector("#selection_talle");
+    let size = selection_size.value;
     const repeat = carrito.some(
       (repeat_prduct) => repeat_prduct.id === product.id
     );
@@ -85,6 +98,7 @@ const listar_card = (product) => {
         marca: product.marca,
         modelo: product.modelo,
         precio: product.precio,
+        talle: size,
         id: product.id,
         cantidad: cantidad,
         stock: product.stock,
@@ -125,6 +139,7 @@ const print_cart = () => {
     <h3>${product.marca}</h3>
     <h4>${product.modelo}</h4>
     <p>$ ${product.precio}</p>
+    <p>${product.talle}</p>
     <p>${product.cantidad}</p>
     <p>Subtotal:$ ${product.precio * product.cantidad}</p>
     <button class="btn_delete">❌</button>
@@ -132,7 +147,13 @@ const print_cart = () => {
       cart_container.append(modal_body);
       //BOTON PARA ELIMINAR ELEMENTOS
       let eliminar = modal_body.querySelector(".btn_delete");
-      eliminar.addEventListener("click", delete_product);
+      eliminar.addEventListener("click", () => {
+        const found_id = carrito.find((el) => el.id === product.id);
+        carrito = carrito.filter((cartid) => cartid !== found_id);
+        quantity_cart_fun();
+        local_storage();
+        print_cart();
+      });
     });
     //FUNCION PARA SUMAR TOTAL COMPRA
     const total_compra = carrito.reduce(
@@ -152,28 +173,18 @@ const print_cart = () => {
     btn_iniciar_compra.innerText = "Iniciar compra";
     modal_footer.append(btn_iniciar_compra);
     btn_iniciar_compra.addEventListener("click", Iniciar_compar);
-    let btn_close_form = document.createElement('button');
-    btn_close_form.className = 'btn_close_form';
-    btn_close_form.innerText = '❌';
+    let btn_close_form = document.createElement("button");
+    btn_close_form.className = "btn_close_form";
+    btn_close_form.innerText = "❌";
     form_modal_container.append(btn_close_form);
-    btn_close_form.addEventListener('click', () => {
+    btn_close_form.addEventListener("click", () => {
       cart_container.style.display = "flex";
-      form_modal_container.style.display = "none"
-    })
+      form_modal_container.style.display = "none";
+    });
   }
 };
 cart.addEventListener("click", print_cart);
 
-//FUNCUION PARA BORRAR ELEMENTOS
-const delete_product = () => {
-  const found_id = carrito.find((product) => product.id);
-  carrito = carrito.filter((id) => {
-    return id !== found_id;
-  });
-  quantity_cart_fun();
-  local_storage();
-  print_cart();
-};
 //FUNCION PARA CONTAR LA CANTIDAD DE ELEMENTOS
 const quantity_cart_fun = () => {
   quantity_cart.style.display = "inline-block";
@@ -187,8 +198,8 @@ const quantity_cart_fun = () => {
 quantity_cart_fun();
 
 //FUNCION FORMULARIO
-const Iniciar_compar = ()=> {
+const Iniciar_compar = () => {
   cart_container.style.display = "none";
-      form_modal_container.style.display = "flex";
-      console.log("INicio OCmpra");
-}
+  form_modal_container.style.display = "flex";
+  console.log("INicio OCmpra");
+};
