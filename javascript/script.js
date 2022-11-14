@@ -2,7 +2,6 @@
 import { getStock } from "./firebase.js";
 
 //CARD PRODUCTS
-//const card_container = document.getElementById("card_container");
 const card_detail_container = document.getElementById("card_detail_container");
 let cantidad = 1;
 
@@ -11,6 +10,8 @@ let carrito = JSON.parse(localStorage.getItem("cart")) || [];
 const card = document.getElementById("cart");
 const cart_container = document.getElementById("cart_modal_container");
 const quantity_cart = document.getElementById("quantity_cart");
+//const modal_header = cart_container.querySelector(".modal_header");
+//const btn_close_modal = modal_header.querySelector(".btn_close_modal")
 
 //LOCAL STORAGE
 const local_storage = () => {
@@ -19,6 +20,7 @@ const local_storage = () => {
 
 //FORMULARIO
 const form_modal_container = document.getElementById("form_modal_container");
+const btn_close_form = form_modal_container.querySelector(".btn_close_form");
 
 //TRAER ELEMENTOS DEL FIREBASE
 window.addEventListener("DOMContentLoaded", async () => {
@@ -40,9 +42,10 @@ const listar_card = (product) => {
         <h3>${product.marca} ${product.modelo}</h3>
         <p>$ ${product.precio}</p>
       </div>
-      <div>
+      <div class="option_btn_container">
       <div class="option_btn">
-        <select name="selection_talle" id="selection_talle">
+      <p>Talle</p>
+        <select class="selection_talle" id="selection_talle">
           <option value="38">38</option>
           <option value="40">40</option>
           <option value="42">42</option>
@@ -50,6 +53,7 @@ const listar_card = (product) => {
         </select>
       </div>
       <div class="btn_count">
+      <p>Cantidad</p>
         <button class="btn_min">-</button>
         <span class="input_count">1</span>
         <button class="btn_max">+</button>
@@ -58,6 +62,7 @@ const listar_card = (product) => {
       <button class="btn_add_cart">Añadir al carrito</button>
     `;
   card_detail_container.append(card_detail);
+
   //ITEM COUNT
   let btn_min = card_detail.querySelector(".btn_min");
   btn_min.addEventListener("click", () => {
@@ -67,9 +72,7 @@ const listar_card = (product) => {
     }
     input_count.innerText = cantidad;
   });
-
   let input_count = card_detail.querySelector(".input_count");
-
   let btn_max = card_detail.querySelector(".btn_max");
   btn_max.addEventListener("click", () => {
     cantidad++;
@@ -78,11 +81,11 @@ const listar_card = (product) => {
 
   //BTN AÑADIR AL CARRITO
   let btn_add_cart = card_detail.querySelector(".btn_add_cart");
-  //FUNCION PARA INCORPORAR PRODUCTOS AL ARRAY DEL CARRITO
   btn_add_cart.addEventListener("click", () => {
     //TALLE
     let selection_size = card_detail.querySelector("#selection_talle");
     let size = selection_size.value;
+    //CANTIDAD
     const repeat = carrito.some(
       (repeat_prduct) => repeat_prduct.id === product.id
     );
@@ -113,7 +116,7 @@ const listar_card = (product) => {
 const print_cart = () => {
   cart_container.innerHTML = "";
   cart_container.style.display = "flex";
-  //HEADER CARRITO
+  //HEADER CARRITO 
   let modal_header = document.createElement("div");
   modal_header.className = "modal_header";
   modal_header.innerHTML = `
@@ -128,7 +131,7 @@ const print_cart = () => {
   //FOREACH PARA PINTAR CARRITO
   if (carrito.length === 0) {
     let txt_cart_vacio = document.createElement("p");
-    txt_cart_vacio.innerHTML = `<p>Su carrito esta vacio, vuelva al <a href="./index.html"></a>Shop ...</p>`;
+    txt_cart_vacio.innerHTML = `<p>Su carrito esta vacio, <a href="./index.html">vuelva al shop..</a></p>`;
     cart_container.append(txt_cart_vacio);
   } else {
     carrito.forEach((product) => {
@@ -136,12 +139,11 @@ const print_cart = () => {
       modal_body.className = "modal_body";
       modal_body.innerHTML += `
     <img src="${product.imagen}"
-    <h3>${product.marca}</h3>
-    <h4>${product.modelo}</h4>
-    <p>$ ${product.precio}</p>
-    <p>${product.talle}</p>
-    <p>${product.cantidad}</p>
-    <p>Subtotal:$ ${product.precio * product.cantidad}</p>
+    <p><b>${product.marca} ${product.modelo}</b></p>
+    <p>Precion Unitario: <b>$${product.precio}</b></p>
+    <p>Talle: <b>${product.talle}</b></p>
+    <p>Cantidad: <b>${product.cantidad}</b></p>
+    <p>Subtotal: <b>$${product.precio * product.cantidad}</b></p>
     <button class="btn_delete">❌</button>
     `;
       cart_container.append(modal_body);
@@ -164,7 +166,7 @@ const print_cart = () => {
     const modal_footer = document.createElement("div");
     modal_footer.className = "modal_footer";
     modal_footer.innerHTML = `
-  <p>Total a pagar $ ${total_compra}</p>
+  <p>Total a pagar: <b>$${total_compra}</b></p>
   `;
     cart_container.append(modal_footer);
     //BOTON DE INICAR COMPRA
@@ -173,10 +175,6 @@ const print_cart = () => {
     btn_iniciar_compra.innerText = "Iniciar compra";
     modal_footer.append(btn_iniciar_compra);
     btn_iniciar_compra.addEventListener("click", Iniciar_compar);
-    let btn_close_form = document.createElement("button");
-    btn_close_form.className = "btn_close_form";
-    btn_close_form.innerText = "❌";
-    form_modal_container.append(btn_close_form);
     btn_close_form.addEventListener("click", () => {
       cart_container.style.display = "flex";
       form_modal_container.style.display = "none";
@@ -201,5 +199,5 @@ quantity_cart_fun();
 const Iniciar_compar = () => {
   cart_container.style.display = "none";
   form_modal_container.style.display = "flex";
-  console.log("INicio OCmpra");
+  console.log("Inicio OCmpra");
 };
