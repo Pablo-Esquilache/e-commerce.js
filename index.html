@@ -80,21 +80,32 @@
         <div id="card_detail_container" class="card_detail_container"></div>
         <div id="cart_modal_container">
           <div class="modal_header">
-            <h1>Carrito</h1>
+            <h2>Carrito</h2>
             <button class="btn_close_modal">❌</button>
           </div>
           <div class="modal_body_container"></div>
           <div class="modal_footer"></div>
         </div>
         <div id="form_modal_container">
-          <div>
+          <div class="header_modal_form">
+            <h2>Formulario de compra</h2>
             <button class="btn_close_form">❌</button>
           </div>
-          <div>
-            <form action="">
-              <input type="text" />
-              <input type="text" />
-              <input type="text" />
+          <div class="form_order_container">
+            <form id="form_order" action="">
+              <label for="name">Nombre</label>
+              <input id="name" type="text" required />
+              <label for="apellido">Apellido</label>
+              <input id="apellido" type="text" required/>
+              <label for="location">Localidad</label>
+              <input id="location" type="text" required>
+              <label for="code">Codido postal</label>
+              <input type="number" name="" id="code" required>
+              <label for="direction">Direccion</label>
+              <input type="text" name="" id="direction" required>
+              <label for="email">E - mail</label>
+              <input id="email" type="email"required />
+              <input type="submit" value="Comprar">
             </form>
           </div>
         </div>

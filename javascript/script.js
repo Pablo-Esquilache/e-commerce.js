@@ -1,5 +1,5 @@
 //FIREBASE
-import { getStock } from "./firebase.js";
+import { getStock, setOrder } from "./firebase.js";
 
 //CARD PRODUCTS
 const card_detail_container = document.getElementById("card_detail_container");
@@ -37,6 +37,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 //LISTAR CARDS
 const listar_card = (product) => {
+  let stock = product.stock;
+  console.log(stock);
   let card_detail = document.createElement("div");
   card_detail.className = "card_detail";
   card_detail.innerHTML = `
@@ -76,11 +78,16 @@ const listar_card = (product) => {
       cantidad = 1;
     }
     input_count.innerText = cantidad;
+    btn_max.removeAttribute("disabled", "disabled");
   });
   let input_count = card_detail.querySelector(".input_count");
   let btn_max = card_detail.querySelector(".btn_max");
   btn_max.addEventListener("click", () => {
     cantidad++;
+    if (cantidad >= stock) {
+      btn_max.setAttribute("disabled", "disabled");
+    }
+    //btn_max.removeAttribute("disabled", "disabled");
     input_count.innerText = cantidad;
   });
 
@@ -165,7 +172,7 @@ const print_cart = () => {
   //MODAL FOOTER PARA CARRITO
   if (carrito.length === 0) {
     modal_footer.innerHTML = "";
-  } else {    
+  } else {
     modal_footer.innerHTML = `
     <p>Total a pagar: <b>$${total_compra}</b></p>
     `;
@@ -176,16 +183,56 @@ const print_cart = () => {
     modal_footer.append(btn_iniciar_compra);
     btn_iniciar_compra.addEventListener("click", () => {
       cart_container.style.display = "none";
-      form_modal_container.style.display = "flex";
-    });
-    btn_close_form.addEventListener("click", () => {
-      cart_container.style.display = "flex";
-      form_modal_container.style.display = "none";
+      form_modal_container.style.display = "block";
     });
   }
 };
 cart.addEventListener("click", print_cart);
 
+//FORMULARIO COMPRA
+btn_close_form.addEventListener("click", () => {
+  cart_container.style.display = "flex";
+  form_modal_container.style.display = "none";
+});
+//FORMULARIO
+const form_order = form_modal_container.querySelector("#form_order");
+form_order.addEventListener("submit", (e) => {
+  e.preventDefault();
+  let name = form_order.querySelector("#name");
+  let apellido = form_order.querySelector("#apellido");
+  let localidad = form_order.querySelector("#location");
+  let codigo_postal = form_order.querySelector("#code");
+  let direccion = form_order.querySelector("#direction");
+  let email = form_order.querySelector("#email");
+  let compra = carrito.map((pro) => {
+    return {
+      id: pro.id,
+      marca: pro.marca,
+      modelo: pro.modelo,
+      precio: pro.precio,
+    };
+  });
+  setOrder(
+    name.value,
+    apellido.value,
+    localidad.value,
+    codigo_postal.value,
+    direccion.value,
+    email.value,
+    compra
+  );
+  carrito = [];
+  modal_body_container.innerHTML = "";
+  quantity_cart_fun();
+  local_storage();
+  print_cart();
+  form_order.reset();
+  function close() {
+    cart_container.style.display = "none";
+    form_modal_container.style.display = "none";
+  }
+  setTimeout(close, 1500);
+});
 //FUNCION PARA CONTAR LA CANTIDAD DE ELEMENTOS
 const quantity_cart_fun = () => {
   quantity_cart.style.display = "inline-block";
