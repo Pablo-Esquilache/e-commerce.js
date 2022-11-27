@@ -1,12 +1,23 @@
 //FIREBASE
 import { getStock, setOrder} from "./firebase.js";
 
+//TRAER ELEMENTOS DEL FIREBASE
+window.addEventListener("DOMContentLoaded", async () => {
+  const querySnapshot = await getStock();
+  querySnapshot.forEach((el) => {
+    listar_card({ id: el.id, ...el.data()});
+  });
+});
+
+//LOCAL STORAGE
+const local_storage = () => {
+  localStorage.setItem("cart", JSON.stringify(carrito));
+};
+
 //CARD PRODUCTS
 const card_detail_container = document.getElementById("card_detail_container");
 let cantidad = 1;
 //const filter_remeras = document.getElementById("filter_remeras");
-const productos = [];
-console.log(typeof(productos))
 
 //CARRITO
 let carrito = JSON.parse(localStorage.getItem("cart")) || [];
@@ -20,27 +31,9 @@ const quantity_cart = document.getElementById("quantity_cart");
     const modal_footer = cart_container.querySelector(".modal_footer");
 const btn_close_modal = modal_header.querySelector(".btn_close_modal");
 
-//LOCAL STORAGE
-const local_storage = () => {
-  localStorage.setItem("cart", JSON.stringify(carrito));
-};
-
 //FORMULARIO
 const form_modal_container = document.getElementById("form_modal_container");
 const btn_close_form = form_modal_container.querySelector(".btn_close_form");
-
-//TRAER ELEMENTOS DEL FIREBASE
-window.addEventListener("DOMContentLoaded", async () => {
-  const querySnapshot = await getStock();
-  querySnapshot.forEach((el) => {
-    listar_card({ id: el.id, ...el.data()});
-  });
-  // const querySnapshot = await q();
-  // querySnapshot.forEach((el) => {
-  //   // doc.data() is never undefined for query doc snapshots
-  //   console.log(el.id, " => ", el.data());
-  // });
-});
 
 //LISTAR CARDS
 const listar_card = (product) => {

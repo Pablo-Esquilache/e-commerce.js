@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.13.0/firebase-app.js";
-  import {getFirestore, collection, getDocs, addDoc, where, query} from "https://www.gstatic.com/firebasejs/9.13.0/firebase-firestore.js"
+  import {getFirestore, collection, getDocs, addDoc} from "https://www.gstatic.com/firebasejs/9.13.0/firebase-firestore.js"
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,7 +20,5 @@
   const db = getFirestore(app);
 
   export const getStock = () => getDocs(collection(db, "stock_calzado"));
-
-  // export const q = () => query(collection(db, "stock_calzado"), where("tipo", "===", "zapatilla"));
 
   export const setOrder = (name, apellido, localidad, codigo_postal, direccion, email, compra) => addDoc(collection(db, "ordenes_compra"),{nombre: name, apellido: apellido, localidad: localidad, codigopostal:codigo_postal, direccion: direccion, email: email, compra: compra});
