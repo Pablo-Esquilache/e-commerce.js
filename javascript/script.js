@@ -9,6 +9,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   });
 });
 
+
 //LOCAL STORAGE
 const local_storage = () => {
   localStorage.setItem("cart", JSON.stringify(carrito));
