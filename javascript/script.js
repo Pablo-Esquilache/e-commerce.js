@@ -1,4 +1,5 @@
 //FIREBASE
+import { stringify } from "querystring";
 import { getStock, setOrder} from "./firebase.js";
 
 //TRAER ELEMENTOS DEL FIREBASE
@@ -207,11 +208,19 @@ form_order.addEventListener("submit", (e) => {
   let compra = carrito.map((pro) => {
     return {
       id: pro.id,
-      marca: pro.marca,
-      modelo: pro.modelo,
+      titulo: pro.marca + pro.modelo,
       precio: pro.precio,
+      cantidad: pro.cantidad,
     };
   });
+fetch("http://localhost:5500/checkout", {
+  method: "post",
+  headers: {
+    "content-type": "application/json",
+  },
+  body: JSON.stringify(compra),
+})
+
   setOrder(
     name.value,
     apellido.value,
@@ -231,7 +240,7 @@ form_order.addEventListener("submit", (e) => {
     cart_container.style.display = "none";
     form_modal_container.style.display = "none";
   }
-  setTimeout(close, 1500);
+  //setTimeout(close, 1500);
 });
 
 //FUNCION PARA CONTAR LA CANTIDAD DE ELEMENTOS

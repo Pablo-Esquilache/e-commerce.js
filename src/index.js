@@ -1,5 +1,17 @@
 const express = require('express');
+const cors = require('cors');
+
 const app = express();
+const port = 3000;
+
+//REGION
+app.use(express.urlencoded({extended: true}));
+
+app.use(express.json({
+    type: "*/*"
+}))
+
+app.use(cors());
 // SDK de Mercado Pago
 const mercadopago = require("mercadopago");
 mercadopago.configure({
@@ -8,16 +20,17 @@ mercadopago.configure({
 
 //ROUTES
  app.get('/checkout', (req, res) => {
+    res.send("estoy funcionando")
     // Crea un objeto de preferencia
-    let preference = {
-      items: [
-        {
-          title: "Mi producto",
-          unit_price: 100,
-          quantity: 1,
-        },
-      ],
-    };
+    // let preference = {
+    //   items: [
+    //     {
+    //       title: "Mi producto",
+    //       unit_price: 100,
+    //       quantity: 1,
+    //     },
+    //   ],
+    // };
     
     mercadopago.preferences
       .create(preference)
@@ -27,8 +40,13 @@ mercadopago.configure({
       .catch(function (error) {
         console.log(error);
       });
+ }) 
+
+ app.post('/checkout', (req, res) => {
+    res.send("estoy funcionando")
  })
 
-
 //SERVER
-app.listen(5500, opts)
+app.listen(port, () => {
+    console.log(` Entoy en http://localhost:${port}`)
+})
