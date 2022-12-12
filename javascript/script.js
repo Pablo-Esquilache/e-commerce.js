@@ -34,6 +34,7 @@ const btn_close_modal = modal_header.querySelector(".btn_close_modal");
 //FORMULARIO
 const form_modal_container = document.getElementById("form_modal_container");
 const btn_close_form = form_modal_container.querySelector(".btn_close_form");
+const form_order_container = form_modal_container.querySelector("#form_order_container");
 
 //LISTAR CARDS
 const listar_card = (product) => {
@@ -194,10 +195,13 @@ btn_close_form.addEventListener("click", () => {
   form_modal_container.style.display = "none";
 });
 //FORMULARIO
-const form_order_container = document.getElementById("form_order_container");
-const form_order = form_order_container.querySelector("#form_order");
-form_order.addEventListener("submit", (e) => {
-  console.log("hola")
+const form_order = form_order_container.querySelector("#form");
+form_order.addEventListener('submit', (e) => {
+  e.preventDefault();
+  let name = form_order.querySelector("#name").value;
+  let apellido = form_order.querySelector("#apellido").value;
+  let orden = {name: name, apellido: apellido}
+  console.log(orden);
   let compra = carrito.map((pro) => {
     return {
       id: pro.id,
@@ -209,9 +213,14 @@ form_order.addEventListener("submit", (e) => {
 
   let compraJSON = JSON.stringify(compra);
 
-  fetch("http://localhost:3000/checkout", {
+  console.log(compra, compraJSON);
+
+  fetch('http://localhost:3000/checkout', {
     method: "POST",
-    body: compraJSON,
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(orden),
   });
 });
 // form_order.setAttribute("action", "http://localhost:3000/checkout");
