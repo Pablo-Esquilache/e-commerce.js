@@ -1,15 +1,13 @@
 //FIREBASE
-import { stringify } from "querystring";
-import { getStock, setOrder} from "./firebase.js";
+import { getStock, setOrder } from "./firebase.js";
 
 //TRAER ELEMENTOS DEL FIREBASE
 window.addEventListener("DOMContentLoaded", async () => {
   const querySnapshot = await getStock();
   querySnapshot.forEach((el) => {
-    listar_card({ id: el.id, ...el.data()});
+    listar_card({ id: el.id, ...el.data() });
   });
 });
-
 
 //LOCAL STORAGE
 const local_storage = () => {
@@ -26,11 +24,11 @@ let carrito = JSON.parse(localStorage.getItem("cart")) || [];
 const cart = document.getElementById("cart");
 const cart_container = document.getElementById("cart_modal_container");
 const quantity_cart = document.getElementById("quantity_cart");
-    const modal_header = cart_container.querySelector(".modal_header");
-    const modal_body_container = cart_container.querySelector(
-      ".modal_body_container"
-    );
-    const modal_footer = cart_container.querySelector(".modal_footer");
+const modal_header = cart_container.querySelector(".modal_header");
+const modal_body_container = cart_container.querySelector(
+  ".modal_body_container"
+);
+const modal_footer = cart_container.querySelector(".modal_footer");
 const btn_close_modal = modal_header.querySelector(".btn_close_modal");
 
 //FORMULARIO
@@ -196,52 +194,66 @@ btn_close_form.addEventListener("click", () => {
   form_modal_container.style.display = "none";
 });
 //FORMULARIO
-const form_order = form_modal_container.querySelector("#form_order");
+const form_order_container = document.getElementById("form_order_container");
+const form_order = form_order_container.querySelector("#form_order");
 form_order.addEventListener("submit", (e) => {
-  e.preventDefault();
-  let name = form_order.querySelector("#name");
-  let apellido = form_order.querySelector("#apellido");
-  let localidad = form_order.querySelector("#location");
-  let codigo_postal = form_order.querySelector("#code");
-  let direccion = form_order.querySelector("#direction");
-  let email = form_order.querySelector("#email");
+  console.log("hola")
   let compra = carrito.map((pro) => {
     return {
       id: pro.id,
-      titulo: pro.marca + pro.modelo,
-      precio: pro.precio,
-      cantidad: pro.cantidad,
+      title: pro.marca + pro.modelo,
+      unit_price: pro.precio,
+      quantity: pro.cantidad,
     };
   });
-fetch("http://localhost:5500/checkout", {
-  method: "post",
-  headers: {
-    "content-type": "application/json",
-  },
-  body: JSON.stringify(compra),
-})
 
-  setOrder(
-    name.value,
-    apellido.value,
-    localidad.value,
-    codigo_postal.value,
-    direccion.value,
-    email.value,
-    compra
-  );
-  carrito = [];
-  modal_body_container.innerHTML = "";
-  quantity_cart_fun();
-  local_storage();
-  print_cart();
-  form_order.reset();
-  function close() {
-    cart_container.style.display = "none";
-    form_modal_container.style.display = "none";
-  }
-  //setTimeout(close, 1500);
+  let compraJSON = JSON.stringify(compra);
+
+  fetch("http://localhost:3000/checkout", {
+    method: "POST",
+    body: compraJSON,
+  });
 });
+// form_order.setAttribute("action", "http://localhost:3000/checkout");
+// form_order.setAttribute("method", "post");
+
+
+//   let name = form_order.querySelector("#name");
+//   let apellido = form_order.querySelector("#apellido");
+//   let localidad = form_order.querySelector("#location");
+//   let codigo_postal = form_order.querySelector("#code");
+//   let direccion = form_order.querySelector("#direction");
+//   let email = form_order.querySelector("#email");
+
+// // fetch("http://localhost:3000/checkout", {
+// //   method: "post",
+// //   headers: {
+// //     "content-type": "application/json",
+// //   },
+// //   body: JSON.stringify(compra),
+// // })
+
+//   setOrder(
+//     name.value,
+//     apellido.value,
+//     localidad.value,
+//     codigo_postal.value,
+//     direccion.value,
+//     email.value,
+//     compra
+//   );
+//   carrito = [];
+//   modal_body_container.innerHTML = "";
+//   quantity_cart_fun();
+//   local_storage();
+//   print_cart();
+//   form_order.reset();
+//   function close() {
+//     cart_container.style.display = "none";
+//     form_modal_container.style.display = "none";
+//   }
+//   //setTimeout(close, 1500);
+// });
 
 //FUNCION PARA CONTAR LA CANTIDAD DE ELEMENTOS
 const quantity_cart_fun = () => {
