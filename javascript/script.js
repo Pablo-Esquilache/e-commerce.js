@@ -198,10 +198,7 @@ btn_close_form.addEventListener("click", () => {
 const form_order = form_order_container.querySelector("#form");
 form_order.addEventListener('submit', (e) => {
   e.preventDefault();
-  let name = form_order.querySelector("#name").value;
-  let apellido = form_order.querySelector("#apellido").value;
-  let orden = {name: name, apellido: apellido}
-  console.log(orden);
+
   let compra = carrito.map((pro) => {
     return {
       id: pro.id,
@@ -211,16 +208,12 @@ form_order.addEventListener('submit', (e) => {
     };
   });
 
-  let compraJSON = JSON.stringify(compra);
-
-  console.log(compra, compraJSON);
-
   fetch('http://localhost:3000/checkout', {
     method: "POST",
     headers: {
       "content-type": "application/json",
     },
-    body: JSON.stringify(orden),
+    body: JSON.stringify(compra),
   });
 });
 // form_order.setAttribute("action", "http://localhost:3000/checkout");
@@ -233,14 +226,6 @@ form_order.addEventListener('submit', (e) => {
 //   let codigo_postal = form_order.querySelector("#code");
 //   let direccion = form_order.querySelector("#direction");
 //   let email = form_order.querySelector("#email");
-
-// // fetch("http://localhost:3000/checkout", {
-// //   method: "post",
-// //   headers: {
-// //     "content-type": "application/json",
-// //   },
-// //   body: JSON.stringify(compra),
-// // })
 
 //   setOrder(
 //     name.value,

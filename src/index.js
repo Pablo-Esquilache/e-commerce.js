@@ -1,5 +1,5 @@
 const express = require("express");
-const body_parser = require("body-parser");
+//const body_parser = require("body-parser");
 const cors = require("cors");
 
 const app = express();
@@ -23,24 +23,24 @@ mercadopago.configure({
 app.post("/checkout", (req, res) => {
   console.log(req.body);
   //Crea un objeto de preferencia
-  // let preference = {
-  //   items: [
-  //     {
-  //       title: "Mi producto",
-  //       unit_price: 100,
-  //       quantity: 1,
-  //     },
-  //   ],
-  // };
-  // mercadopago.preferences
-  //   .create(preference)
-  //   .then(function (response) {
-  //     res.redirect(response.body.init_point)
-  //     // En esta instancia deberás asignar el valor dentro de response.body.id por el ID de preferencia solicitado en el siguiente paso
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error);
-  //   });
+  let preference = {
+    items: [
+      {
+        title: req.body.title,
+        unit_price: req.body.unit_price,
+        quantity: req.body.quantity,
+      },
+    ],
+  };
+  mercadopago.preferences
+    .create(preference)
+    .then(function (response) {
+      res.redirect(response.body.init_point)
+      // En esta instancia deberás asignar el valor dentro de response.body.id por el ID de preferencia solicitado en el siguiente paso
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 });
 
 //  app.post('/checkout', (req, res) => {
