@@ -216,8 +216,6 @@ form_order.addEventListener('submit', (e) => {
     body: JSON.stringify(compra),
   });
 });
-// form_order.setAttribute("action", "http://localhost:3000/checkout");
-// form_order.setAttribute("method", "post");
 
 
 //   let name = form_order.querySelector("#name");
