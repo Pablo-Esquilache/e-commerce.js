@@ -1,16 +1,17 @@
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 const app = express();
+const port = 3000;
+
 // SDK de Mercado Pago
 const mercadopago = require("mercadopago");
-const port = 3000;
 
 // Middleware
 app.use(cors());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(express.static("../../client"));
-
+//app.use(express.json());
+app.use(bodyParser.urlencoded({ extended:true }));
+app.use(bodyParser.json());
 // Agrega credenciales
 mercadopago.configure({
   access_token:
@@ -20,13 +21,12 @@ mercadopago.configure({
 //ROUTES
 app.post("/checkout", (req, res) => {
   console.log(req.body);
-  //Crea un objeto de preferencia
   let preference = {
     items: [
       {
         title: req.body.title,
         unit_price: parseInt(req.body.unit_price),
-        quantity: req.body.quantity,
+        quantity: req.body.quantity
       },
     ],
     back_urls: {

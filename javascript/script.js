@@ -197,14 +197,14 @@ btn_close_form.addEventListener("click", () => {
 //FORMULARIO
 const form_order = form_order_container.querySelector("#form");
 form_order.addEventListener('submit', (e) => {
-  e.preventDefault();
+   e.preventDefault();
 
   let compra = carrito.map((pro) => {
     return {
       id: pro.id,
       title: pro.marca + pro.modelo,
       unit_price: pro.precio,
-      quantity: pro.cantidad,
+      quantity: pro.cantidad
     };
   });
 
