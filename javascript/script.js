@@ -199,7 +199,7 @@ const form_order = form_order_container.querySelector("#form");
 form_order.addEventListener('submit', (e) => {
    e.preventDefault();
 
-  let compra = carrito.map((pro) => {
+  const compra = carrito.map((pro) => {
     return {
       id: pro.id,
       title: pro.marca + pro.modelo,
@@ -213,7 +213,7 @@ form_order.addEventListener('submit', (e) => {
     headers: {
       "content-type": "application/json",
     },
-    body: JSON.stringify(compra),
+    body: JSON.stringify(compra[0]),
   });
 });
 

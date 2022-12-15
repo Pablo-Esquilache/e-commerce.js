@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
+//const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 
@@ -9,9 +9,9 @@ const mercadopago = require("mercadopago");
 
 // Middleware
 app.use(cors());
-//app.use(express.json());
-app.use(bodyParser.urlencoded({ extended:true }));
-app.use(bodyParser.json());
+app.use(express.json());
+//app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded({ extended:true }));
 // Agrega credenciales
 mercadopago.configure({
   access_token:
@@ -26,17 +26,17 @@ app.post("/checkout", (req, res) => {
       {
         title: req.body.title,
         unit_price: parseInt(req.body.unit_price),
-        quantity: req.body.quantity
+        quantity: req.body.quantity,
       },
     ],
     back_urls: {
-			"success": "http://localhost:5500/index.html",
+      "success": "http://localhost:5500/index.html",
 			"failure": "http://localhost:5500/index.html",
 			"pending": "http://localhost:5500/index.html"
 		},
 		auto_return: "approved",
   };
-  
+
   mercadopago.preferences
     .create(preference)
     .then(function (response) {
