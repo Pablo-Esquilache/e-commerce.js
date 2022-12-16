@@ -1,26 +1,29 @@
 const express = require("express");
 const cors = require("cors");
-//const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 
 // SDK de Mercado Pago
-const mercadopago = require("mercadopago");
+const mercadopago = require("mercadopago")
+
+app.use(cors());
 
 // Middleware
-app.use(cors());
 app.use(express.json());
-//app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended:true }));
-// Agrega credenciales
+
 mercadopago.configure({
   access_token:
+    //"APP_USR-1372601663572352-120523-40d45a9110c9926ae82a7e60d7c7d968-257436529",
     "TEST-1372601663572352-120523-37adb67ea40c7652bfbf2ae3d38f25f0-257436529",
 });
 
 //ROUTES
+// app.get('/checkout', (req, res) => {
+//   res.send("Hola")
+// });
+
 app.post("/checkout", (req, res) => {
-  console.log(req.body);
+  console.log(req);
   let preference = {
     items: [
       {
@@ -42,13 +45,13 @@ app.post("/checkout", (req, res) => {
     .then(function (response) {
       res.redirect(response.body.init_point);
       // En esta instancia deberás asignar el valor dentro de response.body.id por el ID de preferencia solicitado en el siguiente paso
+      global.id = response.body.id;
     })
     .catch(function (error) {
       console.log(error);
     });
-});
+}); 
 
-//SERVER
 app.listen(port, () => {
   console.log(`Entoy en http://localhost:${port}`);
 });
