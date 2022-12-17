@@ -77,11 +77,6 @@
       </div>
       <div class="shop_container">
         <h1>SHOP</h1>
-        <!-- <div class="btn_container">
-          <button id="filter_remeras">Remeras</button>
-          <button>Pantalones</button>
-          <button>Zapatillas</button>
-        </div> -->
         <div id="card_detail_container" class="card_detail_container"></div>
         <div id="cart_modal_container">
           <div class="modal_header">
@@ -97,20 +92,20 @@
             <button class="btn_close_form">❌</button>
           </div>
           <div id="form_order_container" class="form_order_container">
-            <form id="form" action="http://localhost:3000/checkout" method="post">
+            <form id="form">
               <label for="name">Nombre</label>
               <input id="name" type="text" required />
               <label for="apellido">Apellido</label>
-              <input id="apellido" type="text" required/>
+              <input id="apellido" type="text" required />
               <label for="location">Localidad</label>
-              <input id="location" type="text" required>
+              <input id="location" type="text" required />
               <label for="code">Codido postal</label>
-              <input type="number" name="" id="code" required>
+              <input type="number" name="" id="code" required />
               <label for="direction">Direccion</label>
-              <input type="text" name="" id="direction" required>
+              <input type="text" name="" id="direction" required />
               <label for="email">E - mail</label>
-              <input id="email" type="email"required />
-              <input type="submit" value="Pagar">
+              <input id="email" type="email" required />
+              <input type="submit" value="Pagar" />
             </form>
           </div>
         </div>
