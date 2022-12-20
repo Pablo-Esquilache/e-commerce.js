@@ -207,6 +207,7 @@ form_order.addEventListener('submit', (e) => {
       quantity: pro.cantidad
     };
   });
+console.log("HOla");
 
   fetch('http://localhost:3000/checkout', {
     method: "POST",
