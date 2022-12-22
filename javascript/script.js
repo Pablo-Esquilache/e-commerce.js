@@ -1,10 +1,13 @@
 //FIREBASE
-import { getStock, setOrder } from "./firebase.js";
+import { getStock, setOrder, upudate_stok } from "./firebase.js";
+
+//const productos = [];
 
 //TRAER ELEMENTOS DEL FIREBASE
 window.addEventListener("DOMContentLoaded", async () => {
   const querySnapshot = await getStock();
   querySnapshot.forEach((el) => {
+    //productos.push({ id: el.id, ...el.data() })
     listar_card({ id: el.id, ...el.data() });
   });
 });
@@ -17,7 +20,6 @@ const local_storage = () => {
 //CARD PRODUCTS
 const card_detail_container = document.getElementById("card_detail_container");
 let cantidad = 1;
-//const filter_remeras = document.getElementById("filter_remeras");
 
 //CARRITO
 let carrito = JSON.parse(localStorage.getItem("cart")) || [];
@@ -37,6 +39,7 @@ const btn_close_form = form_modal_container.querySelector(".btn_close_form");
 const form_order_container = form_modal_container.querySelector("#form_order_container");
 
 //LISTAR CARDS
+//productos.forEach((product) => {
 const listar_card = (product) => {
   let stock = product.stock;
   let card_detail = document.createElement("div");
@@ -207,7 +210,6 @@ form_order.addEventListener('submit', (e) => {
       quantity: pro.cantidad
     };
   });
-console.log("HOla");
 
   fetch('http://localhost:3000/checkout', {
     method: "POST",
@@ -216,6 +218,13 @@ console.log("HOla");
     },
     body: JSON.stringify(compra[0]),
   });
+
+  carrito.forEach((pro) => {
+    let stok_final = pro.stock - pro.cantidad;
+    let stock_id = pro.id;
+    console.log(stock_id, stok_final);
+    upudate_stok(stock_id, stok_final)
+  })
 });
 
 
