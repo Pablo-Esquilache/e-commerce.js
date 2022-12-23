@@ -19,7 +19,7 @@ const local_storage = () => {
 
 //CARD PRODUCTS
 const card_detail_container = document.getElementById("card_detail_container");
-let cantidad = 1;
+let cantidad = 0;
 
 //CARRITO
 let carrito = JSON.parse(localStorage.getItem("cart")) || [];
@@ -36,7 +36,9 @@ const btn_close_modal = modal_header.querySelector(".btn_close_modal");
 //FORMULARIO
 const form_modal_container = document.getElementById("form_modal_container");
 const btn_close_form = form_modal_container.querySelector(".btn_close_form");
-const form_order_container = form_modal_container.querySelector("#form_order_container");
+const form_order_container = form_modal_container.querySelector(
+  "#form_order_container"
+);
 
 //LISTAR CARDS
 //productos.forEach((product) => {
@@ -65,7 +67,7 @@ const listar_card = (product) => {
       <div class="btn_count">
       <p>Cantidad</p>
         <button class="btn_min">-</button>
-        <span class="input_count">1</span>
+        <span class="input_count">${cantidad}</span>
         <button class="btn_max">+</button>
       </div>
       </div>
@@ -76,22 +78,28 @@ const listar_card = (product) => {
   //ITEM COUNT
   let btn_min = card_detail.querySelector(".btn_min");
   btn_min.addEventListener("click", () => {
-    cantidad--;
-    if (cantidad <= 1) {
+    if (stock === 0) {
+      cantidad = 0;
+      btn_min.setAttribute("disabled", "disabled");
+      btn_max.setAttribute("disabled", "disabled");
+    } else if (cantidad <= 1) {
       cantidad = 1;
+      btn_min.removeAttribute("disabled", "disabled");
+    } else {
+      cantidad--;
+      input_count.innerText = cantidad;
     }
-    input_count.innerText = cantidad;
-    btn_max.removeAttribute("disabled", "disabled");
   });
   let input_count = card_detail.querySelector(".input_count");
   let btn_max = card_detail.querySelector(".btn_max");
   btn_max.addEventListener("click", () => {
-    cantidad++;
+    
     if (cantidad >= stock) {
       btn_max.setAttribute("disabled", "disabled");
+    } else{
+      cantidad++;
+      input_count.innerText = cantidad;
     }
-    //btn_max.removeAttribute("disabled", "disabled");
-    input_count.innerText = cantidad;
   });
 
   //BTN AÑADIR AL CARRITO
@@ -199,19 +207,19 @@ btn_close_form.addEventListener("click", () => {
 });
 //FORMULARIO
 const form_order = form_order_container.querySelector("#form");
-form_order.addEventListener('submit', (e) => {
-   e.preventDefault();
+form_order.addEventListener("submit", (e) => {
+  e.preventDefault();
 
   const compra = carrito.map((pro) => {
     return {
       id: pro.id,
       title: pro.marca + pro.modelo,
       unit_price: pro.precio,
-      quantity: pro.cantidad
+      quantity: pro.cantidad,
     };
   });
 
-  fetch('http://localhost:3000/checkout', {
+  fetch("http://localhost:3000/checkout", {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -223,10 +231,9 @@ form_order.addEventListener('submit', (e) => {
     let stok_final = pro.stock - pro.cantidad;
     let stock_id = pro.id;
     console.log(stock_id, stok_final);
-    upudate_stok(stock_id, stok_final)
-  })
+    upudate_stok(stock_id, stok_final);
+  });
 });
-
 
 //   let name = form_order.querySelector("#name");
 //   let apellido = form_order.querySelector("#apellido");
