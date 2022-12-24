@@ -93,10 +93,9 @@ const listar_card = (product) => {
   let input_count = card_detail.querySelector(".input_count");
   let btn_max = card_detail.querySelector(".btn_max");
   btn_max.addEventListener("click", () => {
-    
     if (cantidad >= stock) {
       btn_max.setAttribute("disabled", "disabled");
-    } else{
+    } else {
       cantidad++;
       input_count.innerText = cantidad;
     }
@@ -105,33 +104,35 @@ const listar_card = (product) => {
   //BTN AÑADIR AL CARRITO
   let btn_add_cart = card_detail.querySelector(".btn_add_cart");
   btn_add_cart.addEventListener("click", () => {
-    //TALLE
-    let selection_size = card_detail.querySelector("#selection_talle");
-    let size = selection_size.value;
-    //CANTIDAD
-    const repeat = carrito.some(
-      (repeat_prduct) => repeat_prduct.id === product.id
-    );
-    if (repeat) {
-      carrito.map((prod) => {
-        if (prod.id === product.id) {
-          prod.cantidad = cantidad;
-        }
-      });
-    } else {
-      carrito.push({
-        imagen: product.imagen,
-        marca: product.marca,
-        modelo: product.modelo,
-        precio: product.precio,
-        talle: size,
-        id: product.id,
-        cantidad: cantidad,
-        stock: product.stock,
-      });
+    if (cantidad > 0) {
+      //TALLE
+      let selection_size = card_detail.querySelector("#selection_talle");
+      let size = selection_size.value;
+      //CANTIDAD
+      const repeat = carrito.some(
+        (repeat_prduct) => repeat_prduct.id === product.id
+      );
+      if (repeat) {
+        carrito.map((prod) => {
+          if (prod.id === product.id) {
+            prod.cantidad = cantidad;
+          }
+        });
+      } else {
+        carrito.push({
+          imagen: product.imagen,
+          marca: product.marca,
+          modelo: product.modelo,
+          precio: product.precio,
+          talle: size,
+          id: product.id,
+          cantidad: cantidad,
+          stock: product.stock,
+        });
+      }
+      quantity_cart_fun();
+      local_storage();
     }
-    quantity_cart_fun();
-    local_storage();
   });
 };
 
@@ -210,6 +211,13 @@ const form_order = form_order_container.querySelector("#form");
 form_order.addEventListener("submit", (e) => {
   e.preventDefault();
 
+  let name = form_order.querySelector("#name");
+  let apellido = form_order.querySelector("#apellido");
+  let localidad = form_order.querySelector("#location");
+  let codigo_postal = form_order.querySelector("#code");
+  let direccion = form_order.querySelector("#direction");
+  let email = form_order.querySelector("#email");
+
   const compra = carrito.map((pro) => {
     return {
       id: pro.id,
@@ -218,6 +226,15 @@ form_order.addEventListener("submit", (e) => {
       quantity: pro.cantidad,
     };
   });
+  setOrder(
+    name.value,
+    apellido.value,
+    localidad.value,
+    codigo_postal.value,
+    direccion.value,
+    email.value,
+    compra
+  );
 
   fetch("http://localhost:3000/checkout", {
     method: "POST",
@@ -230,39 +247,22 @@ form_order.addEventListener("submit", (e) => {
   carrito.forEach((pro) => {
     let stok_final = pro.stock - pro.cantidad;
     let stock_id = pro.id;
-    console.log(stock_id, stok_final);
     upudate_stok(stock_id, stok_final);
   });
+
+  quantity_cart_fun();
+  local_storage();
+  print_cart();
+  form_order.reset();
+
+  carrito = [];
+  modal_body_container.innerHTML = "";
+  function close() {
+    cart_container.style.display = "none";
+    form_modal_container.style.display = "none";
+  }
+  setTimeout(close, 1500);
 });
-
-//   let name = form_order.querySelector("#name");
-//   let apellido = form_order.querySelector("#apellido");
-//   let localidad = form_order.querySelector("#location");
-//   let codigo_postal = form_order.querySelector("#code");
-//   let direccion = form_order.querySelector("#direction");
-//   let email = form_order.querySelector("#email");
-
-//   setOrder(
-//     name.value,
-//     apellido.value,
-//     localidad.value,
-//     codigo_postal.value,
-//     direccion.value,
-//     email.value,
-//     compra
-//   );
-//   carrito = [];
-//   modal_body_container.innerHTML = "";
-//   quantity_cart_fun();
-//   local_storage();
-//   print_cart();
-//   form_order.reset();
-//   function close() {
-//     cart_container.style.display = "none";
-//     form_modal_container.style.display = "none";
-//   }
-//   //setTimeout(close, 1500);
-// });
 
 //FUNCION PARA CONTAR LA CANTIDAD DE ELEMENTOS
 const quantity_cart_fun = () => {
