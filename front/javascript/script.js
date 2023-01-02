@@ -240,6 +240,7 @@ form_order.addEventListener("submit", (e) => {
     method: "POST",
     headers: {
       "content-type": "application/json",
+      "Access-Control-Allow-Origin": "*",
     },
     body: JSON.stringify(compra[0]),
   });
@@ -250,7 +251,7 @@ form_order.addEventListener("submit", (e) => {
     upudate_stok(stock_id, stok_final);
   });
 
-  quantity_cart_fun();
+  
   local_storage();
   print_cart();
   form_order.reset();
@@ -262,6 +263,7 @@ form_order.addEventListener("submit", (e) => {
     form_modal_container.style.display = "none";
   }
   setTimeout(close, 1500);
+  quantity_cart_fun();
 });
 
 //FUNCION PARA CONTAR LA CANTIDAD DE ELEMENTOS

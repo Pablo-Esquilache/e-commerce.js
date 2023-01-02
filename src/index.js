@@ -17,8 +17,13 @@ app.use(cors({
 app.use(express.json());
 
 //ROUTES
+app.use('/', express.static("front"));
+
+app.get('/prueba', (req, res) => {
+  res.send("HOLAAA");
+})
+
 app.post("/checkout", (req, res) => {
-  console.log(req.body);
   let preference = {
     items: [
       {
@@ -36,13 +41,14 @@ app.post("/checkout", (req, res) => {
   mercadopago.preferences
     .create(preference)
     .then(function (response) {
-      console.log(response.body);
       res.redirect(response.body.init_point);
     })
     .catch(function (error) {
       console.log(error);
     });
 });
+
+
 
 app.listen(port, () => {
   console.log(`Entoy en http://localhost:${port}`);
