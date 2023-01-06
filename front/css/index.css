@@ -32,6 +32,15 @@ section {
 }
 
 /* INDEX */
+.shop_header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.filter {
+  display: none;
+}
 /* Seccion Infor */
 .section_info {
   width: 100%;
@@ -139,7 +148,7 @@ section {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 .card_detail {
   display: flex;

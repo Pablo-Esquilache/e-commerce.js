@@ -240,7 +240,6 @@ form_order.addEventListener("submit", (e) => {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      "Access-Control-Allow-Origin": "*",
     },
     body: JSON.stringify(compra[0]),
   });
@@ -251,9 +250,6 @@ form_order.addEventListener("submit", (e) => {
     upudate_stok(stock_id, stok_final);
   });
 
-  
-  local_storage();
-  print_cart();
   form_order.reset();
 
   carrito = [];
@@ -263,7 +259,9 @@ form_order.addEventListener("submit", (e) => {
     form_modal_container.style.display = "none";
   }
   setTimeout(close, 1500);
+  local_storage();
   quantity_cart_fun();
+  print_cart();
 });
 
 //FUNCION PARA CONTAR LA CANTIDAD DE ELEMENTOS
@@ -277,3 +275,17 @@ const quantity_cart_fun = () => {
   quantity_cart.innerText = JSON.parse(localStorage.getItem("cart_quantity"));
 };
 quantity_cart_fun();
+
+document.addEventListener("keyup", (e) => {
+  if (e.target.matches("#card_filter")) {
+
+    if(e.key === "Escape") e.target.value = "";
+
+    document.querySelectorAll(".card_detail")
+      .forEach((el) =>
+        el.textContent.toLowerCase().includes(e.target.value.toLowerCase())
+          ? el.style.display = "flex"
+          : el.style.display = "none"
+      );
+  }
+});
