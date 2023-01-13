@@ -1,16 +1,17 @@
 //FIREBASE
-import { getStock, setOrder, upudate_stok } from "./firebase.js";
+import {setOrder, upudate_stok, onGetStock } from "./firebase.js";
 
 //const productos = [];
 
 //TRAER ELEMENTOS DEL FIREBASE
 window.addEventListener("DOMContentLoaded", async () => {
-  const querySnapshot = await getStock();
+  onGetStock((querySnapshot) => {
+  //const querySnapshot = await getStock();
   querySnapshot.forEach((el) => {
     //productos.push({ id: el.id, ...el.data() })
     listar_card({ id: el.id, ...el.data() });
   });
-});
+})});
 
 //LOCAL STORAGE
 const local_storage = () => {
@@ -240,6 +241,7 @@ form_order.addEventListener("submit", (e) => {
     method: "POST",
     headers: {
       "content-type": "application/json",
+      "Access-Control-Allow-Origin": "*",
     },
     body: JSON.stringify(compra[0]),
   });

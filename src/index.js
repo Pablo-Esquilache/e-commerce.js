@@ -7,10 +7,11 @@ const mercadopago = require("mercadopago");
 //Agregar credenciales
 mercadopago.configure({
   access_token:
-    "APP_USR-8073014014129134-121712-ea866dc8dfc90112f4279e47d7c61262-1266563438",
+    "TEST-8073014014129134-121712-36573632deba2e84bcfc48685b365120-1266563438",
 });
 //CORS
-app.use(cors());
+//app.use(cors());
+app.use(cors({origin: '*'}));
 
 // Middleware
 app.use(express.json());
@@ -40,6 +41,7 @@ app.post("/checkout", (req, res) => {
   mercadopago.preferences
     .create(preference)
     .then(function (response) {
+      res.header("Access-Control-Allow-Origin", "*")
       res.redirect(response.body.init_point);
     })
     .catch(function (error) {

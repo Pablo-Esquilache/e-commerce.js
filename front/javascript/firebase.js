@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.13.0/firebase-app.js";
-  import {getFirestore, collection, getDocs, addDoc, updateDoc, doc} from "https://www.gstatic.com/firebasejs/9.13.0/firebase-firestore.js"
+  import {getFirestore, collection, getDocs, addDoc, updateDoc, doc, onSnapshot} from "https://www.gstatic.com/firebasejs/9.13.0/firebase-firestore.js"
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -19,9 +19,11 @@
 
   const db = getFirestore(app);
 
-  export const getStock = () => getDocs(collection(db, "stock_calzado"));
+  //export const getStock = () => getDocs(collection(db, "stock_calzado"));
 
   export const setOrder = (name, apellido, localidad, codigo_postal, direccion, email, compra) => addDoc(collection(db, "ordenes_compra"),{nombre: name, apellido: apellido, localidad: localidad, codigopostal:codigo_postal, direccion: direccion, email: email, compra: compra});
  
   export const upudate_stok = (id, stock_final) => updateDoc(doc(db,"stock_calzado", id),{stock: stock_final})
+
+  export const onGetStock = (callback) => onSnapshot(collection(db,"stock_calzado"), callback)
   
