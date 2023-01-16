@@ -20,6 +20,7 @@ const local_storage = () => {
 
 //CARD PRODUCTS
 const card_detail_container = document.getElementById("card_detail_container");
+const fragment = document.createDocumentFragment();
 let cantidad = 0;
 
 //CARRITO
@@ -47,7 +48,8 @@ const listar_card = (product) => {
   let stock = product.stock;
   let card_detail = document.createElement("div");
   card_detail.className = "card_detail";
-  card_detail.innerHTML = `
+  card_detail.innerHTML = ""
+  card_detail.innerHTML += `
       <div class="img_container">
         <img src="${product.imagen}">
       </div>
@@ -74,7 +76,9 @@ const listar_card = (product) => {
       </div>
       <button class="btn_add_cart">Añadir al carrito</button>
     `;
-  card_detail_container.append(card_detail);
+  fragment.appendChild(card_detail);
+  card_detail_container.appendChild(fragment)
+
 
   //ITEM COUNT
   let btn_min = card_detail.querySelector(".btn_min");
