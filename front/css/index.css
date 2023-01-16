@@ -32,19 +32,11 @@ section {
 }
 
 /* INDEX */
-.shop_header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-}
-.filter {
-  display: none;
-}
 /* Seccion Infor */
 .section_info {
   width: 100%;
-  height: 100%;
+  height: 600px;
+  margin-top: 50px;
 }
 /* Carrusel Info */
 .carrusel_info {
@@ -81,6 +73,7 @@ section {
 }
 .carrusel_info li img {
   width: 100%;
+  height: 100%;
 }
 @keyframes slideCarrusel {
   0% {
@@ -143,12 +136,24 @@ section {
 .shop_container {
   width: 100%;
   height: 100%;
+  margin-top: 15px;
+}
+.shop_header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 10px 0 10px;
+}
+.filter {
+  display: none;
 }
 .card_detail_container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
+  padding: 0 10px 0 10px;
 }
 .card_detail {
   display: flex;
@@ -342,4 +347,23 @@ section {
 }
 #form input {
   margin: 10px 0 10px 0;
+}
+
+/*RESPONSIVE*/
+@media screen and (max-width: 768px) {
+  .carrusel_info {
+    max-width: 100%;
+    max-height: 350px;
+  }
+  .carrusel_info li {
+    max-width: 100%;
+    max-height: 350px;
+  }
+  .carrusel_info img {
+    max-width: 100%;
+    max-height: 350px;    
+  }
+  .section_info {
+    height: 500px;    
+  }
 }
