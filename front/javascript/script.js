@@ -21,7 +21,6 @@ const local_storage = () => {
 //CARD PRODUCTS
 const card_detail_container = document.getElementById("card_detail_container");
 const fragment = document.createDocumentFragment();
-let cantidad = 0;
 
 //CARRITO
 let carrito = JSON.parse(localStorage.getItem("cart")) || [];
@@ -46,6 +45,7 @@ const form_order_container = form_modal_container.querySelector(
 //productos.forEach((product) => {
 const listar_card = (product) => {
   let stock = product.stock;
+  let cantidad = 0;
   let card_detail = document.createElement("div");
   card_detail.className = "card_detail";
   card_detail.innerHTML = ""

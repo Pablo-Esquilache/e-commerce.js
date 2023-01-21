@@ -1,0 +1,57 @@
+@import url("carrusel.css");
+
+.section_info {
+  width: 100%;
+  height: 600px;
+  margin-top: 50px;
+}
+.text_info {
+  padding: 0 5px 0 5px;
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+}
+.text_info p {
+  font-size: 17.5px;
+  text-align: center;
+}
+.text_info h1 {
+  font-size: 27.5px;
+  text-align: center;
+}
+
+/*RESPONSIVE*/
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .section_info {
+    height: 500px;
+  }
+  .text_info {
+    height: 100px;
+  }
+  .hr_info {
+    margin-top: 10px;
+  }
+  .text_info p {
+    font-size: 15px;
+  }
+  .text_info h1 {
+    font-size: 25px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .section_info {
+    height: 400px;
+  }
+  .text_info {
+    height: 100px;
+  }
+  .text_info p {
+    font-size: 12.5px;
+  }
+  .text_info h1 {
+    font-size: 22.5px;
+  }
+  .hr_info {
+    margin-top: 10px;
+  }
+}
