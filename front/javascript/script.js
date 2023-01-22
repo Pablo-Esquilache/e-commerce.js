@@ -154,7 +154,7 @@ const print_cart = () => {
   //FOREACH PARA PINTAR CARRITO
   if (carrito.length === 0) {
     let txt_cart_vacio = document.createElement("div");
-    txt_cart_vacio.innerHTML = `<p>Su carrito esta vacio, <a href="./index.html">vuelva al shop..</a></p>`;
+    txt_cart_vacio.innerHTML = `<p class="msj_vacio">Su carrito esta vacio, <a href="./index.html">vuelva al shop..</a></p>`;
     modal_body_container.append(txt_cart_vacio);
   } else {
     carrito.forEach((product) => {
@@ -200,7 +200,7 @@ const print_cart = () => {
     modal_footer.append(btn_iniciar_compra);
     btn_iniciar_compra.addEventListener("click", () => {
       cart_container.style.display = "none";
-      form_modal_container.style.display = "block";
+      form_modal_container.style.display = "flex";
     });
   }
 };
