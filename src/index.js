@@ -11,7 +11,7 @@ mercadopago.configure({
 });
 //CORS
 //app.use(cors());
-app.use(cors({origin: '*'}));
+app.use(cors({credentials: true, origin: '*'}));
 
 // Middleware
 app.use(express.json());
@@ -52,3 +52,4 @@ app.post("/checkout", (req, res) => {
 app.listen(port, () => {
   console.log(`Entoy en http://localhost:${port}`);
 });
+

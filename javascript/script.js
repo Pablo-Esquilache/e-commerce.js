@@ -245,7 +245,6 @@ form_order.addEventListener("submit", (e) => {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      "Access-Control-Allow-Origin": "*",
     },
     body: JSON.stringify(compra[0]),
   });
