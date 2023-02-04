@@ -1,23 +1,18 @@
 const express = require("express");
 const cors = require("cors");
-const app = express();
 const port = 3000;
-// SDK de Mercado Pago
 const mercadopago = require("mercadopago");
-//Agregar credenciales
+const app = express();
+
 mercadopago.configure({
   access_token:
-    "TEST-8073014014129134-121712-36573632deba2e84bcfc48685b365120-1266563438",
+    "APP_USR-8073014014129134-121712-ea866dc8dfc90112f4279e47d7c61262-1266563438",
 });
-//CORS
-//app.use(cors());
-app.use(cors({credentials: true, origin: '*'}));
 
-// Middleware
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
-//ROUTES
-app.use("/", express.static("front"));
+app.use(express.static("index.html"));
+app.use(cors());
 
 app.get("/prueba", (req, res) => {
   res.send("HOLAAA");
@@ -34,6 +29,8 @@ app.post("/checkout", (req, res) => {
     ],
     back_urls: {
       success: "http://localhost:3000",
+      failure: "http://localhost:3000",
+      pending: "http://localhost:3000",
     },
     auto_return: "approved",
   };
@@ -41,16 +38,15 @@ app.post("/checkout", (req, res) => {
   mercadopago.preferences
     .create(preference)
     .then(function (response) {
-      res.header("Access-Control-Allow-Origin", "*")
       res.redirect(response.body.init_point);
+      res.json({
+        id: response.body.id,
+      });
     })
     .catch(function (error) {
       console.log(error);
     });
 });
-
 app.listen(port, () => {
   console.log(`Entoy en http://localhost:${port}`);
 });
-
-
