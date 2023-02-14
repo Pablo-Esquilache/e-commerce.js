@@ -1,17 +1,18 @@
 //FIREBASE
-import {setOrder, upudate_stok, onGetStock } from "./firebase.js";
+import { setOrder, upudate_stok, onGetStock } from "./firebase.js";
 
 //const productos = [];
 
 //TRAER ELEMENTOS DEL FIREBASE
 window.addEventListener("DOMContentLoaded", async () => {
   onGetStock((querySnapshot) => {
-  //const querySnapshot = await getStock();
-  querySnapshot.forEach((el) => {
-    //productos.push({ id: el.id, ...el.data() })
-    listar_card({ id: el.id, ...el.data() });
+    //const querySnapshot = await getStock();
+    querySnapshot.forEach((el) => {
+      //productos.push({ id: el.id, ...el.data() })
+      listar_card({ id: el.id, ...el.data() });
+    });
   });
-})});
+});
 
 //LOCAL STORAGE
 const local_storage = () => {
@@ -48,7 +49,7 @@ const listar_card = (product) => {
   let cantidad = 0;
   let card_detail = document.createElement("div");
   card_detail.className = "card_detail";
-  card_detail.innerHTML = ""
+  card_detail.innerHTML = "";
   card_detail.innerHTML += `
       <div class="img_container">
         <img src="${product.imagen}">
@@ -77,8 +78,7 @@ const listar_card = (product) => {
       <button class="btn_add_cart">Añadir al carrito</button>
     `;
   fragment.appendChild(card_detail);
-  card_detail_container.appendChild(fragment)
-
+  card_detail_container.appendChild(fragment);
 
   //ITEM COUNT
   let btn_min = card_detail.querySelector(".btn_min");
@@ -241,14 +241,6 @@ form_order.addEventListener("submit", (e) => {
     compra
   );
 
-  fetch("http://localhost:3000/checkout", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(compra[0]),
-  });
-
   carrito.forEach((pro) => {
     let stok_final = pro.stock - pro.cantidad;
     let stock_id = pro.id;
@@ -283,14 +275,14 @@ quantity_cart_fun();
 
 document.addEventListener("keyup", (e) => {
   if (e.target.matches("#card_filter")) {
+    if (e.key === "Escape") e.target.value = "";
 
-    if(e.key === "Escape") e.target.value = "";
-
-    document.querySelectorAll(".card_detail")
+    document
+      .querySelectorAll(".card_detail")
       .forEach((el) =>
         el.textContent.toLowerCase().includes(e.target.value.toLowerCase())
-          ? el.style.display = "flex"
-          : el.style.display = "none"
+          ? (el.style.display = "flex")
+          : (el.style.display = "none")
       );
   }
 });
