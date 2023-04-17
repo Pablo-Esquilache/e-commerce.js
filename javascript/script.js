@@ -2,6 +2,12 @@
 import { setOrder, upudate_stok, onGetStock } from "./firebase.js";
 
 //const productos = [];
+const mercadopago = new MercadoPago(
+  "TEST-daf72a44-7918-4460-8354-5485e52bfe07",
+  {
+    locale: "es-AR", // The most common are: 'pt-BR', 'es-AR' and 'en-US'
+  }
+);
 
 //TRAER ELEMENTOS DEL FIREBASE
 window.addEventListener("DOMContentLoaded", async () => {
@@ -216,49 +222,67 @@ const form_order = form_order_container.querySelector("#form");
 form_order.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  let name = form_order.querySelector("#name");
-  let apellido = form_order.querySelector("#apellido");
-  let localidad = form_order.querySelector("#location");
-  let codigo_postal = form_order.querySelector("#code");
-  let direccion = form_order.querySelector("#direction");
-  let email = form_order.querySelector("#email");
+  // let name = form_order.querySelector("#name");
+  // let apellido = form_order.querySelector("#apellido");
+  // let localidad = form_order.querySelector("#location");
+  // let codigo_postal = form_order.querySelector("#code");
+  // let direccion = form_order.querySelector("#direction");
+  // let email = form_order.querySelector("#email");
 
   const compra = carrito.map((pro) => {
     return {
       id: pro.id,
       title: pro.marca + pro.modelo,
-      unit_price: pro.precio,
-      quantity: pro.cantidad,
+      unit_price: parseFloat(pro.precio),
+      quantity: parseFloat(pro.cantidad),
     };
   });
-  setOrder(
-    name.value,
-    apellido.value,
-    localidad.value,
-    codigo_postal.value,
-    direccion.value,
-    email.value,
-    compra
-  );
 
-  carrito.forEach((pro) => {
-    let stok_final = pro.stock - pro.cantidad;
-    let stock_id = pro.id;
-    upudate_stok(stock_id, stok_final);
-  });
+  fetch("http://localhost:8080/create_preference", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(compra),
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (preference) {
+      createCheckoutButton(preference.id);
+    })
+    .catch(function () {
+      alert("Unexpected error");
+    });
 
-  form_order.reset();
+  // setOrder(
+  //   name.value,
+  //   apellido.value,
+  //   localidad.value,
+  //   codigo_postal.value,
+  //   direccion.value,
+  //   email.value,
+  //   compra
+  // );
 
-  carrito = [];
-  modal_body_container.innerHTML = "";
-  function close() {
-    cart_container.style.display = "none";
-    form_modal_container.style.display = "none";
-  }
-  setTimeout(close, 1500);
-  local_storage();
-  quantity_cart_fun();
-  print_cart();
+  // carrito.forEach((pro) => {
+  //   let stok_final = pro.stock - pro.cantidad;
+  //   let stock_id = pro.id;
+  //   upudate_stok(stock_id, stok_final);
+  // });
+
+  // form_order.reset();
+
+  // carrito = [];
+  // modal_body_container.innerHTML = "";
+  // function close() {
+  //   cart_container.style.display = "none";
+  //   form_modal_container.style.display = "none";
+  // }
+  // setTimeout(close, 1500);
+  // local_storage();
+  // quantity_cart_fun();
+  // print_cart();
 });
 
 //FUNCION PARA CONTAR LA CANTIDAD DE ELEMENTOS
@@ -286,3 +310,26 @@ document.addEventListener("keyup", (e) => {
       );
   }
 });
+
+function createCheckoutButton(preferenceId) {
+  // Initialize the checkout
+  const bricksBuilder = mercadopago.bricks();
+
+  const renderComponent = async (bricksBuilder) => {
+    if (window.checkoutButton) window.checkoutButton.unmount();
+    await bricksBuilder.create(
+      "wallet",
+      "button-checkout", // class/id where the payment button will be displayed
+      {
+        initialization: {
+          preferenceId: preferenceId,
+        },
+        callbacks: {
+          onError: (error) => console.error(error),
+          onReady: () => {},
+        },
+      }
+    );
+  };
+  window.checkoutButton = renderComponent(bricksBuilder);
+}
