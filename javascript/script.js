@@ -233,17 +233,19 @@ form_order.addEventListener("submit", (e) => {
     return {
       id: pro.id,
       title: pro.marca + pro.modelo,
-      unit_price: parseFloat(pro.precio),
-      quantity: parseFloat(pro.cantidad),
+      unit_price: pro.precio,
+      quantity: pro.cantidad,
     };
   });
+
+  console.log(compra);
 
   fetch("http://localhost:8080/create_preference", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(compra),
+    body: JSON.stringify(compra[1]),
   })
     .then(function (response) {
       return response.json();

@@ -37,11 +37,12 @@ app.get('/javascript/script.js', function(req, res) {
   });
 
 app.post("/create_preference", (req, res) => {
+  console.log(req.body)
   let preference = {
     items: [
       {
-        title: req.body.description,
-        unit_price: Number(req.body.price),
+        title: req.body.title,
+        unit_price: Number(req.body.unit_price),
         quantity: Number(req.body.quantity),
       },
     ],
@@ -52,7 +53,7 @@ app.post("/create_preference", (req, res) => {
     },
     auto_return: "approved",
   };
-
+console.log(preference);
   mercadopago.preferences
     .create(preference)
     .then(function (response) {
