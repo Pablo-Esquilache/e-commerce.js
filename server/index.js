@@ -36,35 +36,68 @@ app.get('/javascript/script.js', function(req, res) {
     res.sendFile(path.join(__dirname, '../javascript/script.js'));
   });
 
-app.post("/create_preference", (req, res) => {
-  console.log(req.body)
-  let preference = {
-    items: [
-      {
-        title: req.body.title,
-        unit_price: Number(req.body.unit_price),
-        quantity: Number(req.body.quantity),
+  app.post("/create_preference", (req, res) => {
+    const productos = req.body;
+    
+    // Crear la variable preference dinámicamente
+    let preference = {
+      items: productos.map(producto => ({
+        title: producto.title,
+        unit_price: Number(producto.unit_price),
+        quantity: Number(producto.quantity),
+      })),
+      back_urls: {
+        success: "http://localhost:8080",
+        failure: "http://localhost:8080",
+        pending: "",
       },
-    ],
-    back_urls: {
-      success: "http://localhost:8080",
-      failure: "http://localhost:8080",
-      pending: "",
-    },
-    auto_return: "approved",
-  };
-console.log(preference);
-  mercadopago.preferences
-    .create(preference)
-    .then(function (response) {
-      res.json({
-        id: response.body.id,
+      auto_return: "approved",
+    };
+  
+    console.log(preference);
+    mercadopago.preferences
+      .create(preference)
+      .then(function (response) {
+        res.json({
+          id: response.body.id,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
       });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-});
+  });
+  
+
+// app.post("/create_preference", (req, res) => {
+//   const productos = req.body.productos;
+//   console.log(productos)
+//   let preference = {
+//     items: [
+//       {
+//         title: req.body.title,
+//         unit_price: Number(req.body.unit_price),
+//         quantity: Number(req.body.quantity),
+//       },
+//     ],
+//     back_urls: {
+//       success: "http://localhost:8080",
+//       failure: "http://localhost:8080",
+//       pending: "",
+//     },
+//     auto_return: "approved",
+//   };
+// console.log(preference);
+//   mercadopago.preferences
+//     .create(preference)
+//     .then(function (response) {
+//       res.json({
+//         id: response.body.id,
+//       });
+//     })
+//     .catch(function (error) {
+//       console.log(error);
+//     });
+// });
 
 app.get("/feedback", function (req, res) {
   res.json({

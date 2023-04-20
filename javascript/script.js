@@ -238,6 +238,10 @@ form_order.addEventListener("submit", (e) => {
     };
   });
 
+  // let preference = {
+  //   items: compra,
+  //  };
+
   console.log(compra);
 
   fetch("http://localhost:8080/create_preference", {
@@ -245,7 +249,7 @@ form_order.addEventListener("submit", (e) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(compra[1]),
+    body: JSON.stringify(compra),
   })
     .then(function (response) {
       return response.json();
