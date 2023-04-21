@@ -5,7 +5,6 @@ const path = require("path");
 
 const mercadopago = require("mercadopago");
 
-// REPLACE WITH YOUR ACCESS TOKEN AVAILABLE IN: https://developers.mercadopago.com/panel
 mercadopago.configure({
   access_token:
     "TEST-8073014014129134-121712-36573632deba2e84bcfc48685b365120-1266563438",
@@ -20,84 +19,55 @@ app.get("/", function (req, res) {
   const filePath = path.resolve(__dirname, "..", "index.html");
   res.sendFile(filePath);
 });
-app.get('/css/*.css', function(req, res) {
-    res.setHeader('Content-Type', 'text/css');
-    res.sendFile(path.join(__dirname, '../', req.path));
-  });
-  
-
-  app.get('/javascript/firebase.js', function(req, res) {
-    res.setHeader('Content-Type', 'text/javascript');
-    res.sendFile(path.join(__dirname, '../javascript/firebase.js'));
+app.get("/css/*.css", function (req, res) {
+  res.setHeader("Content-Type", "text/css");
+  res.sendFile(path.join(__dirname, "../", req.path));
 });
 
-app.get('/javascript/script.js', function(req, res) {
-    res.setHeader('Content-Type', 'text/javascript');
-    res.sendFile(path.join(__dirname, '../javascript/script.js'));
-  });
+app.get("/javascript/:fileName", function (req, res) {
+  var fileName = req.params.fileName;
+  res.setHeader("Content-Type", "text/javascript");
+  res.sendFile(path.join(__dirname, "../javascript/" + fileName));
+});
 
-  app.post("/create_preference", (req, res) => {
-    const productos = req.body;
-    
-    // Crear la variable preference dinámicamente
-    let preference = {
-      items: productos.map(producto => ({
-        title: producto.title,
-        unit_price: Number(producto.unit_price),
-        quantity: Number(producto.quantity),
-      })),
-      back_urls: {
-        success: "http://localhost:8080",
-        failure: "http://localhost:8080",
-        pending: "",
-      },
-      auto_return: "approved",
-    };
-  
-    console.log(preference);
-    mercadopago.preferences
-      .create(preference)
-      .then(function (response) {
-        res.json({
-          id: response.body.id,
-        });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  });
-  
-
-// app.post("/create_preference", (req, res) => {
-//   const productos = req.body.productos;
-//   console.log(productos)
-//   let preference = {
-//     items: [
-//       {
-//         title: req.body.title,
-//         unit_price: Number(req.body.unit_price),
-//         quantity: Number(req.body.quantity),
-//       },
-//     ],
-//     back_urls: {
-//       success: "http://localhost:8080",
-//       failure: "http://localhost:8080",
-//       pending: "",
-//     },
-//     auto_return: "approved",
-//   };
-// console.log(preference);
-//   mercadopago.preferences
-//     .create(preference)
-//     .then(function (response) {
-//       res.json({
-//         id: response.body.id,
-//       });
-//     })
-//     .catch(function (error) {
-//       console.log(error);
-//     });
+// app.get("/javascript/firebase.js", function (req, res) {
+//   res.setHeader("Content-Type", "text/javascript");
+//   res.sendFile(path.join(__dirname, "../javascript/firebase.js"));
 // });
+
+// app.get("/javascript/script.js", function (req, res) {
+//   res.setHeader("Content-Type", "text/javascript");
+//   res.sendFile(path.join(__dirname, "../javascript/script.js"));
+// });
+
+app.post("/create_preference", (req, res) => {
+  const productos = req.body;
+  let preference = {
+    items: productos.map((producto) => ({
+      title: producto.title,
+      unit_price: Number(producto.unit_price),
+      quantity: Number(producto.quantity),
+    })),
+    back_urls: {
+      success: "http://localhost:8080",
+      failure: "http://localhost:8080",
+      pending: "",
+    },
+    auto_return: "approved",
+  };
+
+  console.log(preference);
+  mercadopago.preferences
+    .create(preference)
+    .then(function (response) {
+      res.json({
+        id: response.body.id,
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+});
 
 app.get("/feedback", function (req, res) {
   res.json({
