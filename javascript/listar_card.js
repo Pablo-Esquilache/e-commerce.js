@@ -1,9 +1,7 @@
-import { carrito } from "./print_cart.js";
+import { carrito, local_storage  } from "./print_cart.js";
 import { quantityCart } from "./quantity_cart.js";
-import { local_storage } from "./print_cart.js";
 
 const fragment = document.createDocumentFragment();
-const card_detail_container = document.getElementById("card_detail_container");
 
 export const listarCard = (product) => {
     let stock = product.stock;

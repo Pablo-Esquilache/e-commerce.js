@@ -19,10 +19,6 @@ app.get("/", function (req, res) {
   const filePath = path.resolve(__dirname, "..", "index.html");
   res.sendFile(filePath);
 });
-app.get("/css/*.css", function (req, res) {
-  res.setHeader("Content-Type", "text/css");
-  res.sendFile(path.join(__dirname, "../", req.path));
-});
 
 app.get("/javascript/:fileName", function (req, res) {
   var fileName = req.params.fileName;
@@ -35,10 +31,20 @@ app.get("/javascript/:fileName", function (req, res) {
 //   res.sendFile(path.join(__dirname, "../javascript/firebase.js"));
 // });
 
-// app.get("/javascript/script.js", function (req, res) {
+// app.get("/javascript/print_cart.js", function (req, res) {
 //   res.setHeader("Content-Type", "text/javascript");
-//   res.sendFile(path.join(__dirname, "../javascript/script.js"));
+//   res.sendFile(path.join(__dirname, "../javascript/print_cart.js"));
 // });
+
+// app.get("/javascript/form_order.js", function (req, res) {
+//   res.setHeader("Content-Type", "text/javascript");
+//   res.sendFile(path.join(__dirname, "../javascript/form_order.js"));
+// });
+
+app.get("/css/*.css", function (req, res) {
+  res.setHeader("Content-Type", "text/css");
+  res.sendFile(path.join(__dirname, "../", req.path));
+});
 
 app.post("/create_preference", (req, res) => {
   const productos = req.body;

@@ -1,13 +1,10 @@
-import { setOrder, upudate_stok } from "../javascript/firebase.js";
+import { setOrder } from "../javascript/firebase.js";
 import { mercado_pago } from "./mercadopago.js";
-import { carrito, updateCart } from "./print_cart.js";
-import { modal_body_container } from "./print_cart.js";
-import { local_storage } from "./print_cart.js";
-import { quantityCart } from "./quantity_cart.js";
-import { cart_container } from "./print_cart.js";
-import { printCart } from "./print_cart.js";
+import { carrito, cart_container } from "./print_cart.js";
 
-const form_modal_container = document.getElementById("form_modal_container");
+
+
+export const form_modal_container = document.getElementById("form_modal_container");
 const form_order_container = form_modal_container.querySelector(
   "#form_order_container"
 );
@@ -46,26 +43,10 @@ export const formOrder = () => {
       compra
     );
 
-    carrito.forEach((pro) => {
-      let stok_final = pro.stock - pro.cantidad;
-      let stock_id = pro.id;
-      upudate_stok(stock_id, stok_final);
-    });
-
-    form_order.reset();
-
-    updateCart([]);
-    //carrito = [];
-    modal_body_container.innerHTML = "";
-    function close() {
-      cart_container.style.display = "none";
-      form_modal_container.style.display = "none";
-    }
-    setTimeout(close, 1500);
-    local_storage();
-    quantityCart();
-    printCart();
+   
   });
+  
+      form_order.reset();
 };
 
 btn_close_form.addEventListener("click", () => {
