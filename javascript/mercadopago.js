@@ -1,5 +1,5 @@
-//import { close } from "./close_form.js";
 import { upudate_stok } from "../javascript/firebase.js";
+import { formOrderDate } from "./form_order_date.js";
 import {
   updateCart,
   modal_body_container,
@@ -36,9 +36,9 @@ export function mercado_pago(compra) {
         let stock_id = pro.id;
         upudate_stok(stock_id, stok_final);
       });
+      formOrderDate()
       updateCart([]);
       modal_body_container.innerHTML = "";
-      //setTimeout(close, 1500);
       local_storage();
       quantityCart();
       printCart();

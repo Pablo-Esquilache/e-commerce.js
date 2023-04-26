@@ -1,28 +1,20 @@
-import { setOrder } from "../javascript/firebase.js";
 import { mercado_pago } from "./mercadopago.js";
 import { carrito, cart_container } from "./print_cart.js";
-
-
 
 export const form_modal_container = document.getElementById("form_modal_container");
 const form_order_container = form_modal_container.querySelector(
   "#form_order_container"
 );
 const btn_close_form = form_modal_container.querySelector(".btn_close_form");
-const form_order = form_order_container.querySelector("#form");
+export const form_order = form_order_container.querySelector("#form");
+export let compra = ""
 
 export const formOrder = () => {
   form_order.addEventListener("submit", (e) => {
-    e.preventDefault();
 
-    let name = form_order.querySelector("#name");
-    let apellido = form_order.querySelector("#apellido");
-    let localidad = form_order.querySelector("#location");
-    let codigo_postal = form_order.querySelector("#code");
-    let direccion = form_order.querySelector("#direction");
-    let email = form_order.querySelector("#email");
+    e.preventDefault();    
 
-    const compra = carrito.map((pro) => {
+    compra = carrito.map((pro) => {
       return {
         id: pro.id,
         title: pro.marca + pro.modelo,
@@ -31,21 +23,10 @@ export const formOrder = () => {
       };
     });
 
-    mercado_pago(compra);
-
-    setOrder(
-      name.value,
-      apellido.value,
-      localidad.value,
-      codigo_postal.value,
-      direccion.value,
-      email.value,
-      compra
-    );
-
+    mercado_pago(compra);  
    
   });
-  
+
       form_order.reset();
 };
 
