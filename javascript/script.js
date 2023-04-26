@@ -3,13 +3,13 @@ import { listarCard } from "./listar_card.js";
 import { printCart } from "./print_cart.js";
 import { quantityCart } from "./quantity_cart.js";
 import { formOrder } from "./form_order.js";
+//import { listACard } from "./lista_card.js";
 
 //TRAER ELEMENTOS DEL FIREBASE
 window.addEventListener("DOMContentLoaded", async () => {
   onGetStock((querySnapshot) => {
-    //const querySnapshot = await getStock();
     querySnapshot.forEach((el) => {
-      //productos.push({ id: el.id, ...el.data() })
+      //listACard({ id: el.id, ...el.data() })
       listarCard({ id: el.id, ...el.data() });
     });
   });
